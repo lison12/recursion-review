@@ -15,9 +15,12 @@ var stringifyJSON = function(obj) {
   if (typeof obj === 'object' && obj !== null) {
     var result = ''; 
     for (var key in obj) {
-      result = stringifyJSON(key) + ':' + stringifyJSON(obj[key])
+      if (typeof obj[key] === 'undefined' || typeof obj[key] === 'function') {
+        continue;
+      }
+      result += stringifyJSON(key) + ':' + stringifyJSON(obj[key]) + ',';
     }
-    return '{' + result + '}';
+    return '{' + result.slice(0, -1) + '}';
   }
   if (typeof obj === 'string') {
     return '"' + obj + '"';  
